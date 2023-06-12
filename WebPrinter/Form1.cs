@@ -17,6 +17,8 @@ namespace WebPrinter
     {
         private HttpHelper httpHelper;
 
+        private Random r = new Random();
+
         public Form1()
         {
             InitializeComponent();
@@ -36,14 +38,14 @@ namespace WebPrinter
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string text = File.ReadAllText(@"E:\Code\C#\WebPrinter\WebPrinter\text.html");
-            PrinterHelper.PrintHtml(text, printerListBox.SelectedItem.ToString());
+            string pdf = Directory.GetCurrentDirectory() + "/test.pdf";
+            PrinterHelper.PrintPdf(pdf, printerListBox.SelectedItem.ToString());
         }
 
 
         private void StartPrintService()
         {
-            httpHelper = new HttpHelper(1989);
+            httpHelper = new HttpHelper(19890);
             httpHelper.RequestHandler = HandlePrintRequest;
             httpHelper.Start();
         }
@@ -53,7 +55,7 @@ namespace WebPrinter
             Dictionary<string, string> resultData = new Dictionary<string, string>();
             int statusCode = 200;
 
-            if (request.HttpMethod == "OPTION")
+            if (request.HttpMethod == "OPTIONS")
             {
                 httpHelper.SendJsonResponse(response, resultData, statusCode);
                 return;
@@ -88,17 +90,53 @@ namespace WebPrinter
                         getSelectedPrinter.Invoke();
                     }
                     resultData.Add("result", "Success");
+                    resultData.Add("status", "200");
+                    statusCode = 200;
+                }
+                else if (postData.ContainsKey("print_pdf_base64"))
+                {
+                    string pdfFileDir = Directory.GetCurrentDirectory() + "/pdf/";
+                    if (!Directory.Exists(pdfFileDir))
+                    {
+                        Directory.CreateDirectory(pdfFileDir);
+                    }
+                    string fileName = pdfFileDir + DateTime.Now.ToString("yyyyMMddHHmmss_") + this.r.Next(1000, 9999).ToString() + ".pdf";
+                    byte[] pdfBytes = Convert.FromBase64String(postData["print_pdf_base64"]);
+                    using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.CreateNew)))
+                    {
+                        writer.Write(pdfBytes);
+                    }
+
+                    string selectedPrinter = null;
+                    Action getSelectedPrinter = () =>
+                    {
+                        selectedPrinter = printerListBox.SelectedItem.ToString();
+                        PrinterHelper.PrintPdf(fileName, selectedPrinter);
+                        File.Delete(fileName);
+                    };
+                    if (printerListBox.InvokeRequired)
+                    {
+                        printerListBox.Invoke(getSelectedPrinter);
+                    }
+                    else
+                    {
+                        getSelectedPrinter.Invoke();
+                    }
+                    resultData.Add("result", "Success");
+                    resultData.Add("status", "200");
                     statusCode = 200;
                 }
                 else
                 {
                     resultData.Add("result", "Invalid Request Data");
+                    resultData.Add("status", "400");
                     statusCode = 400;
                 }
             }
             else
             {
                 resultData.Add("result", "Skip");
+                resultData.Add("status", "404");
                 statusCode = 404;
             }
             httpHelper.SendJsonResponse(response, resultData, statusCode);

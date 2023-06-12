@@ -55,5 +55,21 @@ namespace WebPrinter
             }
             doc.PrintDocument.Print();
         }
+
+        public static void PrintPdf(string fileName, string printerName = null)
+        {
+            PdfDocument doc = new PdfDocument();
+            doc.LoadFromFile(fileName);
+
+            if (printerName != null)
+            {
+                List<String> printers = GetLocalPrinters();
+                if (printers.Contains(printerName))
+                {
+                    doc.PrinterName = printerName;
+                }
+            }
+            doc.PrintDocument.Print();
+        }
     }
 }
