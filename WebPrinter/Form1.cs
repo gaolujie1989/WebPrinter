@@ -36,7 +36,7 @@ namespace WebPrinter
             printerListBox.DataSource = printers;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             string pdf = Directory.GetCurrentDirectory() + "/test.pdf";
             PrinterHelper.PrintPdf(pdf, printerListBox.SelectedItem.ToString());
@@ -45,8 +45,10 @@ namespace WebPrinter
 
         private void StartPrintService()
         {
-            httpHelper = new HttpHelper(19890);
-            httpHelper.RequestHandler = HandlePrintRequest;
+            httpHelper = new HttpHelper(19890)
+            {
+                RequestHandler = HandlePrintRequest
+            };
             httpHelper.Start();
         }
 

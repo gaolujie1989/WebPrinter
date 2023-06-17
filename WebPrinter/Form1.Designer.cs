@@ -59,9 +59,9 @@
             this.printBtn.Name = "printBtn";
             this.printBtn.Size = new System.Drawing.Size(75, 23);
             this.printBtn.TabIndex = 2;
-            this.printBtn.Text = "Print Now";
+            this.printBtn.Text = "Print Test";
             this.printBtn.UseVisualStyleBackColor = true;
-            this.printBtn.Click += new System.EventHandler(this.button1_Click);
+            this.printBtn.Click += new System.EventHandler(this.Button1_Click);
             // 
             // Form1
             // 

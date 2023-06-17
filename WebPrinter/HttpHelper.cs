@@ -16,8 +16,10 @@ namespace WebPrinter
 
         public HttpHelper(int port, string ip = "127.0.0.1", string prefix = "http")
         {
-            httpListener = new HttpListener();
-            httpListener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
+            httpListener = new HttpListener
+            {
+                AuthenticationSchemes = AuthenticationSchemes.Anonymous
+            };
             var uriPrefix = prefix + "://" + ip + ":" + port.ToString() + "/";
             httpListener.Prefixes.Add(uriPrefix);
         }
