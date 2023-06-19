@@ -1,5 +1,6 @@
 ﻿using Spire.Pdf;
 using Spire.Pdf.HtmlConverter;
+using Spire.Pdf.Print;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
@@ -34,51 +35,49 @@ namespace WebPrinter
 
         public static void PrintHtml(string html, PrintOptions options)
         {
-            PdfDocument pdf = new PdfDocument();
-            pdf.LoadFromHTML(html, false, new PdfPageSettings(), new PdfHtmlLayoutFormat());
-            pdf.PageScaling = PdfPrintPageScaling.FitSize;
-
-            var printDoc = pdf.PrintDocument;
-            //// 不弹出打印对话框
-            printDoc.PrintController = new StandardPrintController();
-            SetPrintDocumentOptions(printDoc, options);
-            printDoc.Print();
+            using (var doc = new PdfDocument())
+            {
+                doc.LoadFromHTML(html, false, new PdfPageSettings(), new PdfHtmlLayoutFormat());
+                SetPrintSettingOptions(doc.PrintSettings, options);
+                doc.Print();
+            }
         }
 
         public static void PrintPdf(string fileName, PrintOptions options = null)
         {
-            PdfDocument pdf = new PdfDocument();
-            pdf.LoadFromFile(fileName);
-            pdf.PageScaling = PdfPrintPageScaling.FitSize;
-
-            var printDoc = pdf.PrintDocument;
-            //// 不弹出打印对话框
-            printDoc.PrintController = new StandardPrintController();
-            SetPrintDocumentOptions(printDoc, options);
-            printDoc.Print();
+            using (var doc = new PdfDocument())
+            {
+                doc.LoadFromFile(fileName);
+                SetPrintSettingOptions(doc.PrintSettings, options);
+                doc.Print();
+            }
         }
 
-        private static void SetPrintDocumentOptions(PrintDocument document, PrintOptions options)
+        private static void SetPrintSettingOptions(PdfPrintSettings settings, PrintOptions options)
         {
+            //不弹出打印对话框
+            settings.PrintController = new StandardPrintController();
+            //关闭自动横向
+            settings.SelectSinglePageLayout(PdfSinglePageScalingMode.FitSize, false);
             if (!String.IsNullOrEmpty(options.PrinterName))
             {
-                document.PrinterSettings.PrinterName = options.PrinterName;
+                settings.PrinterName = options.PrinterName;
             }
             if (!String.IsNullOrEmpty(options.PaperName))
             {
                 var ps = GetPaperSize(options.PaperName);
                 if (ps != null)
                 {
-                    document.DefaultPageSettings.PaperSize = ps;
+                    settings.PaperSize = ps;
                 }
             }
-            if (options.Duplex && document.PrinterSettings.CanDuplex)
+            if (options.Duplex && settings.CanDuplex)
             {
-                document.PrinterSettings.Duplex = Duplex.Horizontal;
+                settings.Duplex = Duplex.Horizontal;
             }
             if (options.Landscape)
             {
-                document.DefaultPageSettings.Landscape = options.Landscape;
+                settings.Landscape = options.Landscape;
             }
         }
 

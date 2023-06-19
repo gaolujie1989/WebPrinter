@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.printerGroupBox = new System.Windows.Forms.GroupBox();
+            this.landscapeBox = new System.Windows.Forms.CheckBox();
             this.printerListBox = new System.Windows.Forms.ListBox();
             this.printTestBtn = new System.Windows.Forms.Button();
-            this.landscapeBox = new System.Windows.Forms.CheckBox();
             this.printerGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,6 +45,19 @@
             this.printerGroupBox.TabIndex = 0;
             this.printerGroupBox.TabStop = false;
             this.printerGroupBox.Text = "Printer";
+            // 
+            // landscapeBox
+            // 
+            this.landscapeBox.AutoSize = true;
+            this.landscapeBox.Checked = global::WebPrinter.Properties.Settings.Default.landscape;
+            this.landscapeBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::WebPrinter.Properties.Settings.Default, "landscape", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.landscapeBox.Location = new System.Drawing.Point(16, 201);
+            this.landscapeBox.Name = "landscapeBox";
+            this.landscapeBox.Size = new System.Drawing.Size(78, 16);
+            this.landscapeBox.TabIndex = 2;
+            this.landscapeBox.Text = "Landscape";
+            this.landscapeBox.UseVisualStyleBackColor = true;
+            this.landscapeBox.CheckedChanged += new System.EventHandler(this.LandscapeBox_CheckedChanged);
             // 
             // printerListBox
             // 
@@ -63,17 +76,7 @@
             this.printTestBtn.TabIndex = 2;
             this.printTestBtn.Text = "Print Test";
             this.printTestBtn.UseVisualStyleBackColor = true;
-            this.printTestBtn.Click += new System.EventHandler(this.PrintTest_Click);
-            // 
-            // landscapeBox
-            // 
-            this.landscapeBox.AutoSize = true;
-            this.landscapeBox.Location = new System.Drawing.Point(16, 201);
-            this.landscapeBox.Name = "landscapeBox";
-            this.landscapeBox.Size = new System.Drawing.Size(78, 16);
-            this.landscapeBox.TabIndex = 2;
-            this.landscapeBox.Text = "Landscape";
-            this.landscapeBox.UseVisualStyleBackColor = true;
+            this.printTestBtn.Click += new System.EventHandler(this.PrintTestBtn_Click);
             // 
             // Form1
             // 

@@ -1,14 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WebPrinter
@@ -16,8 +11,6 @@ namespace WebPrinter
     public partial class Form1 : Form
     {
         private HttpHelper httpHelper;
-
-        private PrintOptions printOptions = new PrintOptions();
 
         public Form1()
         {
@@ -45,7 +38,14 @@ namespace WebPrinter
             };
         }
 
-        private void PrintTest_Click(object sender, EventArgs e)
+        private void LandscapeBox_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = sender as CheckBox;
+            Properties.Settings.Default.landscape = checkBox.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void PrintTestBtn_Click(object sender, EventArgs e)
         {
             string pdf = Directory.GetCurrentDirectory() + "/test.pdf";
             PrinterHelper.PrintPdf(pdf, GetPrintOptions());
