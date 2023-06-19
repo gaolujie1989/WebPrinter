@@ -30,16 +30,18 @@
         {
             this.printerGroupBox = new System.Windows.Forms.GroupBox();
             this.printerListBox = new System.Windows.Forms.ListBox();
-            this.printBtn = new System.Windows.Forms.Button();
+            this.printTestBtn = new System.Windows.Forms.Button();
+            this.landscapeBox = new System.Windows.Forms.CheckBox();
             this.printerGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // printerGroupBox
             // 
+            this.printerGroupBox.Controls.Add(this.landscapeBox);
             this.printerGroupBox.Controls.Add(this.printerListBox);
             this.printerGroupBox.Location = new System.Drawing.Point(24, 27);
             this.printerGroupBox.Name = "printerGroupBox";
-            this.printerGroupBox.Size = new System.Drawing.Size(300, 200);
+            this.printerGroupBox.Size = new System.Drawing.Size(300, 393);
             this.printerGroupBox.TabIndex = 0;
             this.printerGroupBox.TabStop = false;
             this.printerGroupBox.Text = "Printer";
@@ -53,27 +55,38 @@
             this.printerListBox.Size = new System.Drawing.Size(250, 148);
             this.printerListBox.TabIndex = 1;
             // 
-            // printBtn
+            // printTestBtn
             // 
-            this.printBtn.Location = new System.Drawing.Point(355, 56);
-            this.printBtn.Name = "printBtn";
-            this.printBtn.Size = new System.Drawing.Size(75, 23);
-            this.printBtn.TabIndex = 2;
-            this.printBtn.Text = "Print Test";
-            this.printBtn.UseVisualStyleBackColor = true;
-            this.printBtn.Click += new System.EventHandler(this.Button1_Click);
+            this.printTestBtn.Location = new System.Drawing.Point(355, 56);
+            this.printTestBtn.Name = "printTestBtn";
+            this.printTestBtn.Size = new System.Drawing.Size(75, 23);
+            this.printTestBtn.TabIndex = 2;
+            this.printTestBtn.Text = "Print Test";
+            this.printTestBtn.UseVisualStyleBackColor = true;
+            this.printTestBtn.Click += new System.EventHandler(this.PrintTest_Click);
+            // 
+            // landscapeBox
+            // 
+            this.landscapeBox.AutoSize = true;
+            this.landscapeBox.Location = new System.Drawing.Point(16, 201);
+            this.landscapeBox.Name = "landscapeBox";
+            this.landscapeBox.Size = new System.Drawing.Size(78, 16);
+            this.landscapeBox.TabIndex = 2;
+            this.landscapeBox.Text = "Landscape";
+            this.landscapeBox.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.printBtn);
+            this.Controls.Add(this.printTestBtn);
             this.Controls.Add(this.printerGroupBox);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.printerGroupBox.ResumeLayout(false);
+            this.printerGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -82,6 +95,7 @@
 
         private System.Windows.Forms.GroupBox printerGroupBox;
         private System.Windows.Forms.ListBox printerListBox;
-        private System.Windows.Forms.Button printBtn;
+        private System.Windows.Forms.Button printTestBtn;
+        private System.Windows.Forms.CheckBox landscapeBox;
     }
 }

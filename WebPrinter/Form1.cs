@@ -17,7 +17,7 @@ namespace WebPrinter
     {
         private HttpHelper httpHelper;
 
-        private Random r = new Random();
+        private PrintOptions printOptions = new PrintOptions();
 
         public Form1()
         {
@@ -36,10 +36,13 @@ namespace WebPrinter
             printerListBox.DataSource = printers;
         }
 
-        private void Button1_Click(object sender, EventArgs e)
+        private void PrintTest_Click(object sender, EventArgs e)
         {
             string pdf = Directory.GetCurrentDirectory() + "/test.pdf";
-            PrinterHelper.PrintPdf(pdf, printerListBox.SelectedItem.ToString());
+            PrinterHelper.PrintPdf(pdf, new PrintOptions()
+            {
+                PrinterName = printerListBox.SelectedItem.ToString()
+            });
         }
 
 
@@ -78,11 +81,12 @@ namespace WebPrinter
 
                 if (postData.ContainsKey("print_html"))
                 {
-                    string selectedPrinter = null;
                     Action getSelectedPrinter = () =>
                     {
-                        selectedPrinter = printerListBox.SelectedItem.ToString();
-                        PrinterHelper.PrintHtml(postData["print_html"], selectedPrinter);
+                        PrinterHelper.PrintHtml(postData["print_html"], new PrintOptions()
+                        {
+                            PrinterName = printerListBox.SelectedItem.ToString()
+                        });
                     };
                     if (printerListBox.InvokeRequired)
                     {
@@ -102,18 +106,19 @@ namespace WebPrinter
                     {
                         Directory.CreateDirectory(pdfFileDir);
                     }
-                    string fileName = pdfFileDir + DateTime.Now.ToString("yyyyMMddHHmmss_") + this.r.Next(1000, 9999).ToString() + ".pdf";
+                    string fileName = pdfFileDir + DateTime.Now.ToString("yyyyMMddHHmmss_") + (new Random()).Next(1000, 9999).ToString() + ".pdf";
                     byte[] pdfBytes = Convert.FromBase64String(postData["print_pdf_base64"]);
                     using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.CreateNew)))
                     {
                         writer.Write(pdfBytes);
                     }
 
-                    string selectedPrinter = null;
                     Action getSelectedPrinter = () =>
                     {
-                        selectedPrinter = printerListBox.SelectedItem.ToString();
-                        PrinterHelper.PrintPdf(fileName, selectedPrinter);
+                        PrinterHelper.PrintPdf(fileName, new PrintOptions()
+                        {
+                            PrinterName = printerListBox.SelectedItem.ToString()
+                        });
                         File.Delete(fileName);
                     };
                     if (printerListBox.InvokeRequired)

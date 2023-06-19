@@ -8,68 +8,115 @@ namespace WebPrinter
 {
     class PrinterHelper
     {
-        private static PrintDocument printDoc = new PrintDocument();
-
         public static String DefaultPrinter()
         {
-            return printDoc.PrinterSettings.PrinterName;
+            using (var doc = new PrintDocument())
+            {
+                return doc.PrinterSettings.PrinterName;
+            }
         }
 
         public static List<String> GetLocalPrinters()
         {
-            List<String> fPrinters = new List<String>
+            List<String> printerNames = new List<String>
             {
                 DefaultPrinter()
             };
-            foreach (String fPrinterName in PrinterSettings.InstalledPrinters)
+            foreach (String printerName in PrinterSettings.InstalledPrinters)
             {
-                if (!fPrinters.Contains(fPrinterName))
+                if (!printerNames.Contains(printerName))
                 {
-                    fPrinters.Add(fPrinterName);
+                    printerNames.Add(printerName);
                 }
             }
-            return fPrinters;
+            return printerNames;
         }
 
-        public static void PrintHtml(string html, string printerName = null, PdfPageSettings setting = null, PdfHtmlLayoutFormat htmlLayoutFormat = null)
+        public static void PrintHtml(string html, PrintOptions options)
         {
-            PdfDocument doc = new PdfDocument();
-            if (setting == null)
-            {
-                setting = new PdfPageSettings();
-            }
-            if (htmlLayoutFormat == null)
-            {
-                htmlLayoutFormat = new PdfHtmlLayoutFormat();
-            }
+            PdfDocument pdf = new PdfDocument();
+            pdf.LoadFromHTML(html, false, new PdfPageSettings(), new PdfHtmlLayoutFormat());
+            pdf.PageScaling = PdfPrintPageScaling.FitSize;
 
-            doc.LoadFromHTML(html, false, setting, htmlLayoutFormat);
-
-            if (printerName != null)
-            {
-                List<String> printers = GetLocalPrinters();
-                if (printers.Contains(printerName))
-                {
-                    doc.PrinterName = printerName;
-                }
-            }
-            doc.PrintDocument.Print();
+            var printDoc = pdf.PrintDocument;
+            //// 不弹出打印对话框
+            printDoc.PrintController = new StandardPrintController();
+            SetPrintDocumentOptions(printDoc, options);
+            printDoc.Print();
         }
 
-        public static void PrintPdf(string fileName, string printerName = null)
+        public static void PrintPdf(string fileName, PrintOptions options = null)
         {
-            PdfDocument doc = new PdfDocument();
-            doc.LoadFromFile(fileName);
+            PdfDocument pdf = new PdfDocument();
+            pdf.LoadFromFile(fileName);
+            pdf.PageScaling = PdfPrintPageScaling.FitSize;
 
-            if (printerName != null)
+            var printDoc = pdf.PrintDocument;
+            //// 不弹出打印对话框
+            printDoc.PrintController = new StandardPrintController();
+            SetPrintDocumentOptions(printDoc, options);
+            printDoc.Print();
+        }
+
+        private static void SetPrintDocumentOptions(PrintDocument document, PrintOptions options)
+        {
+            if (!String.IsNullOrEmpty(options.PrinterName))
             {
-                List<String> printers = GetLocalPrinters();
-                if (printers.Contains(printerName))
+                document.PrinterSettings.PrinterName = options.PrinterName;
+            }
+            if (!String.IsNullOrEmpty(options.PaperName))
+            {
+                var ps = GetPaperSize(options.PaperName);
+                if (ps != null)
                 {
-                    doc.PrinterName = printerName;
+                    document.DefaultPageSettings.PaperSize = ps;
                 }
             }
-            doc.PrintDocument.Print();
+            if (options.Duplex && document.PrinterSettings.CanDuplex)
+            {
+                document.PrinterSettings.Duplex = Duplex.Horizontal;
+            }
+            if (options.Landscape)
+            {
+                document.DefaultPageSettings.Landscape = options.Landscape;
+            }
         }
+
+        private static PaperSize GetPaperSize(string paperName)
+        {
+            using (var doc = new PrintDocument())
+            {
+                foreach (PaperSize ps in doc.PrinterSettings.PaperSizes)
+                {
+                    if (ps.PaperName.Equals(paperName, StringComparison.OrdinalIgnoreCase)) {
+                        return ps;
+                    }
+                }
+            }
+            return null;
+        }
+    }
+
+    public class PrintOptions
+    {
+        /// <summary>
+        /// 指定打印机，缺省使用系统默认打印机
+        /// </summary>
+        public string PrinterName { get; set; }
+
+        /// <summary>
+        /// 指定纸类型，缺省使用打印机默认纸类型
+        /// </summary>
+        public string PaperName { get; set; }
+
+        /// <summary>
+        /// 是否双面打印，缺省单面打印
+        /// </summary>
+        public bool Duplex { get; set; }
+
+        /// <summary>
+        /// 是否横向打印，缺省竖向打印
+        /// </summary>
+        public bool Landscape { get; set; }
     }
 }
