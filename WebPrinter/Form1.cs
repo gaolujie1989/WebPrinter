@@ -36,13 +36,19 @@ namespace WebPrinter
             printerListBox.DataSource = printers;
         }
 
+        private PrintOptions GetPrintOptions()
+        {
+            return new PrintOptions()
+            {
+                PrinterName = printerListBox.SelectedItem.ToString(),
+                Landscape = landscapeBox.Checked,
+            };
+        }
+
         private void PrintTest_Click(object sender, EventArgs e)
         {
             string pdf = Directory.GetCurrentDirectory() + "/test.pdf";
-            PrinterHelper.PrintPdf(pdf, new PrintOptions()
-            {
-                PrinterName = printerListBox.SelectedItem.ToString()
-            });
+            PrinterHelper.PrintPdf(pdf, GetPrintOptions());
         }
 
 
@@ -81,19 +87,16 @@ namespace WebPrinter
 
                 if (postData.ContainsKey("print_html"))
                 {
-                    Action getSelectedPrinter = () =>
+                    Action printAction = () =>
                     {
-                        PrinterHelper.PrintHtml(postData["print_html"], new PrintOptions()
-                        {
-                            PrinterName = printerListBox.SelectedItem.ToString()
-                        });
+                        PrinterHelper.PrintHtml(postData["print_html"], GetPrintOptions());
                     };
                     if (printerListBox.InvokeRequired)
                     {
-                        printerListBox.Invoke(getSelectedPrinter);     
+                        printerListBox.Invoke(printAction);     
                     } else
                     {
-                        getSelectedPrinter.Invoke();
+                        printAction.Invoke();
                     }
                     resultData.Add("result", "Success");
                     resultData.Add("status", "200");
@@ -113,21 +116,18 @@ namespace WebPrinter
                         writer.Write(pdfBytes);
                     }
 
-                    Action getSelectedPrinter = () =>
+                    Action printAction = () =>
                     {
-                        PrinterHelper.PrintPdf(fileName, new PrintOptions()
-                        {
-                            PrinterName = printerListBox.SelectedItem.ToString()
-                        });
+                        PrinterHelper.PrintPdf(fileName, GetPrintOptions());
                         File.Delete(fileName);
                     };
                     if (printerListBox.InvokeRequired)
                     {
-                        printerListBox.Invoke(getSelectedPrinter);
+                        printerListBox.Invoke(printAction);
                     }
                     else
                     {
-                        getSelectedPrinter.Invoke();
+                        printAction.Invoke();
                     }
                     resultData.Add("result", "Success");
                     resultData.Add("status", "200");
