@@ -27,22 +27,32 @@ namespace WebPrinter
         {
             var printers = PrinterHelper.GetLocalPrinters();
             printerListBox.DataSource = printers;
+
+            Properties.Settings.Default.PrinterName = printerListBox.SelectedItem.ToString();
+            Properties.Settings.Default.Save();
+        }
+
+        private void PrinterListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListBox listBox = sender as ListBox;
+            Properties.Settings.Default.PrinterName = listBox.SelectedItem.ToString();
+            Properties.Settings.Default.Save();
+        }
+
+        private void LandscapeBox_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = sender as CheckBox;
+            Properties.Settings.Default.Landscape = checkBox.Checked;
+            Properties.Settings.Default.Save();
         }
 
         private PrintOptions GetPrintOptions()
         {
             return new PrintOptions()
             {
-                PrinterName = printerListBox.SelectedItem.ToString(),
-                Landscape = landscapeBox.Checked,
+                PrinterName = Properties.Settings.Default.PrinterName,
+                Landscape = Properties.Settings.Default.Landscape,
             };
-        }
-
-        private void LandscapeBox_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckBox checkBox = sender as CheckBox;
-            Properties.Settings.Default.landscape = checkBox.Checked;
-            Properties.Settings.Default.Save();
         }
 
         private void PrintTestBtn_Click(object sender, EventArgs e)
@@ -87,17 +97,7 @@ namespace WebPrinter
 
                 if (postData.ContainsKey("print_html"))
                 {
-                    Action printAction = () =>
-                    {
-                        PrinterHelper.PrintHtml(postData["print_html"], GetPrintOptions());
-                    };
-                    if (printerListBox.InvokeRequired)
-                    {
-                        printerListBox.Invoke(printAction);     
-                    } else
-                    {
-                        printAction.Invoke();
-                    }
+                    PrinterHelper.PrintHtml(postData["print_html"], GetPrintOptions());
                     resultData.Add("result", "Success");
                     resultData.Add("status", "200");
                     statusCode = 200;
@@ -116,19 +116,8 @@ namespace WebPrinter
                         writer.Write(pdfBytes);
                     }
 
-                    Action printAction = () =>
-                    {
-                        PrinterHelper.PrintPdf(fileName, GetPrintOptions());
-                        File.Delete(fileName);
-                    };
-                    if (printerListBox.InvokeRequired)
-                    {
-                        printerListBox.Invoke(printAction);
-                    }
-                    else
-                    {
-                        printAction.Invoke();
-                    }
+                    PrinterHelper.PrintPdf(fileName, GetPrintOptions());
+                    File.Delete(fileName);
                     resultData.Add("result", "Success");
                     resultData.Add("status", "200");
                     statusCode = 200;

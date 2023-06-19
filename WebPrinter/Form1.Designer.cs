@@ -49,7 +49,7 @@
             // landscapeBox
             // 
             this.landscapeBox.AutoSize = true;
-            this.landscapeBox.Checked = global::WebPrinter.Properties.Settings.Default.landscape;
+            this.landscapeBox.Checked = global::WebPrinter.Properties.Settings.Default.Landscape;
             this.landscapeBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::WebPrinter.Properties.Settings.Default, "landscape", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.landscapeBox.Location = new System.Drawing.Point(16, 201);
             this.landscapeBox.Name = "landscapeBox";
@@ -67,6 +67,7 @@
             this.printerListBox.Name = "printerListBox";
             this.printerListBox.Size = new System.Drawing.Size(250, 148);
             this.printerListBox.TabIndex = 1;
+            this.printerListBox.SelectedIndexChanged += new System.EventHandler(this.PrinterListBox_SelectedIndexChanged);
             // 
             // printTestBtn
             // 

@@ -26,12 +26,24 @@ namespace WebPrinter.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool landscape {
+        public bool Landscape {
             get {
-                return ((bool)(this["landscape"]));
+                return ((bool)(this["Landscape"]));
             }
             set {
-                this["landscape"] = value;
+                this["Landscape"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PrinterName {
+            get {
+                return ((string)(this["PrinterName"]));
+            }
+            set {
+                this["PrinterName"] = value;
             }
         }
     }
