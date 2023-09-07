@@ -144,9 +144,15 @@ namespace WebPrinter
                     byte[] imageBytes = Convert.FromBase64String(postData["print_image_base64"]);
                     Stream stream = new MemoryStream(imageBytes);
                     CreatePdfFromImage(stream, fileName);
-     
+
                     PrinterHelper.PrintPdf(fileName, GetPrintOptions());
                     File.Delete(fileName);
+                    resultData.Add("result", "Success");
+                    resultData.Add("status", "200");
+                    statusCode = 200;
+                }
+                else if (postData.ContainsKey("test"))
+                {
                     resultData.Add("result", "Success");
                     resultData.Add("status", "200");
                     statusCode = 200;
@@ -157,13 +163,8 @@ namespace WebPrinter
                     resultData.Add("status", "400");
                     statusCode = 400;
                 }
-            }
-            else if (request.Url.AbsolutePath == "/test")
-            {
-                resultData.Add("result", "Success");
-                resultData.Add("status", "200");
-                statusCode = 200;
-            } else
+            } 
+            else
             {
                 resultData.Add("result", "Skip");
                 resultData.Add("status", "404");
