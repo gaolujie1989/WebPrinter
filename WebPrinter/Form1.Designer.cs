@@ -31,7 +31,8 @@
             this.printerGroupBox = new System.Windows.Forms.GroupBox();
             this.landscapeBox = new System.Windows.Forms.CheckBox();
             this.printerListBox = new System.Windows.Forms.ListBox();
-            this.printTestBtn = new System.Windows.Forms.Button();
+            this.printPdfTestBtn = new System.Windows.Forms.Button();
+            this.printImageTestBtn = new System.Windows.Forms.Button();
             this.printerGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,22 +70,33 @@
             this.printerListBox.TabIndex = 1;
             this.printerListBox.SelectedIndexChanged += new System.EventHandler(this.PrinterListBox_SelectedIndexChanged);
             // 
-            // printTestBtn
+            // printPdfTestBtn
             // 
-            this.printTestBtn.Location = new System.Drawing.Point(355, 56);
-            this.printTestBtn.Name = "printTestBtn";
-            this.printTestBtn.Size = new System.Drawing.Size(75, 23);
-            this.printTestBtn.TabIndex = 2;
-            this.printTestBtn.Text = "Print Test";
-            this.printTestBtn.UseVisualStyleBackColor = true;
-            this.printTestBtn.Click += new System.EventHandler(this.PrintTestBtn_Click);
+            this.printPdfTestBtn.Location = new System.Drawing.Point(355, 56);
+            this.printPdfTestBtn.Name = "printPdfTestBtn";
+            this.printPdfTestBtn.Size = new System.Drawing.Size(123, 23);
+            this.printPdfTestBtn.TabIndex = 2;
+            this.printPdfTestBtn.Text = "Print PDF Test";
+            this.printPdfTestBtn.UseVisualStyleBackColor = true;
+            this.printPdfTestBtn.Click += new System.EventHandler(this.PrintPdfTestBtn_Click);
+            // 
+            // printImageTestBtn
+            // 
+            this.printImageTestBtn.Location = new System.Drawing.Point(355, 85);
+            this.printImageTestBtn.Name = "printImageTestBtn";
+            this.printImageTestBtn.Size = new System.Drawing.Size(123, 23);
+            this.printImageTestBtn.TabIndex = 3;
+            this.printImageTestBtn.Text = "Print Image Test";
+            this.printImageTestBtn.UseVisualStyleBackColor = true;
+            this.printImageTestBtn.Click += new System.EventHandler(this.PrintImageTestBtn_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.printTestBtn);
+            this.Controls.Add(this.printImageTestBtn);
+            this.Controls.Add(this.printPdfTestBtn);
             this.Controls.Add(this.printerGroupBox);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -99,7 +111,8 @@
 
         private System.Windows.Forms.GroupBox printerGroupBox;
         private System.Windows.Forms.ListBox printerListBox;
-        private System.Windows.Forms.Button printTestBtn;
+        private System.Windows.Forms.Button printPdfTestBtn;
         private System.Windows.Forms.CheckBox landscapeBox;
+        private System.Windows.Forms.Button printImageTestBtn;
     }
 }

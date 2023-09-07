@@ -89,6 +89,9 @@
     <Content Include="text.html">
       <SubType>Component</SubType>
     </Content>
+    <Content Include="test.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

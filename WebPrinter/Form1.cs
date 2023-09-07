@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
+using Spire.Pdf;
+using Spire.Pdf.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -55,12 +58,20 @@ namespace WebPrinter
             };
         }
 
-        private void PrintTestBtn_Click(object sender, EventArgs e)
+        private void PrintPdfTestBtn_Click(object sender, EventArgs e)
         {
             string pdf = Directory.GetCurrentDirectory() + "/test.pdf";
             PrinterHelper.PrintPdf(pdf, GetPrintOptions());
         }
 
+        private void PrintImageTestBtn_Click(object sender, EventArgs e)
+        {
+            string image = Directory.GetCurrentDirectory() + "/test.png";
+            string pdf = image + ".pdf";
+            Stream stream = File.OpenRead(image);
+            CreatePdfFromImage(stream, pdf);
+            PrinterHelper.PrintPdf(pdf, GetPrintOptions());
+        }
 
         private void StartPrintService()
         {
@@ -122,6 +133,24 @@ namespace WebPrinter
                     resultData.Add("status", "200");
                     statusCode = 200;
                 }
+                else if (postData.ContainsKey("print_image_base64"))
+                {
+                    string pdfFileDir = Directory.GetCurrentDirectory() + "/pdf/";
+                    if (!Directory.Exists(pdfFileDir))
+                    {
+                        Directory.CreateDirectory(pdfFileDir);
+                    }
+                    string fileName = pdfFileDir + DateTime.Now.ToString("yyyyMMddHHmmss_") + (new Random()).Next(1000, 9999).ToString() + ".pdf";
+                    byte[] imageBytes = Convert.FromBase64String(postData["print_image_base64"]);
+                    Stream stream = new MemoryStream(imageBytes);
+                    CreatePdfFromImage(stream, fileName);
+     
+                    PrinterHelper.PrintPdf(fileName, GetPrintOptions());
+                    File.Delete(fileName);
+                    resultData.Add("result", "Success");
+                    resultData.Add("status", "200");
+                    statusCode = 200;
+                }
                 else
                 {
                     resultData.Add("result", "Invalid Request Data");
@@ -129,13 +158,40 @@ namespace WebPrinter
                     statusCode = 400;
                 }
             }
-            else
+            else if (request.Url.AbsolutePath == "/test")
+            {
+                resultData.Add("result", "Success");
+                resultData.Add("status", "200");
+                statusCode = 200;
+            } else
             {
                 resultData.Add("result", "Skip");
                 resultData.Add("status", "404");
                 statusCode = 404;
             }
             httpHelper.SendJsonResponse(response, resultData, statusCode);
+        }
+
+        private void CreatePdfFromImage(Stream imageStream, string pdfFilePath)
+        {
+            Image sourceImage = Image.FromStream(imageStream, false, false);
+            float imageWidth = sourceImage.Width;
+            float imageHeight = sourceImage.Height;
+
+            PdfImage imagePdf = PdfImage.FromStream(imageStream);
+
+            PdfDocument newDocument = new PdfDocument();
+            //删除第一页，破解水印
+            //newDocument.Pages.Add();
+            //newDocument.Pages.RemoveAt(0
+            //设置文档纸张尺寸
+            newDocument.PageSettings.Width = imageWidth;
+            newDocument.PageSettings.Height = imageHeight;
+            newDocument.PageSettings.Margins.All = 0;
+
+            PdfPageBase newPage = newDocument.Pages.Add();
+            newPage.Canvas.DrawImage(imagePdf, 0, 0, imageWidth, imageHeight);
+            newDocument.SaveToFile(pdfFilePath);
         }
     }
 }
