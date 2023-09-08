@@ -78,7 +78,7 @@
             this.printBWarenTestBtn.TabIndex = 2;
             this.printBWarenTestBtn.Text = "Print BWaren Test";
             this.printBWarenTestBtn.UseVisualStyleBackColor = true;
-            this.printBWarenTestBtn.Click += new System.EventHandler(this.PrintPdfTestBtn_Click);
+            this.printBWarenTestBtn.Click += new System.EventHandler(this.PrintBWarenTestBtn_Click);
             // 
             // printVCDSTestBtn
             // 
