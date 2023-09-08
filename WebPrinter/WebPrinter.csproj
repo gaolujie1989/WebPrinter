@@ -74,7 +74,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="test.pdf">
+    <None Include="test-bwaren.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="App.config" />
@@ -89,7 +89,7 @@
     <Content Include="text.html">
       <SubType>Component</SubType>
     </Content>
-    <Content Include="test.png">
+    <Content Include="test-vcds.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

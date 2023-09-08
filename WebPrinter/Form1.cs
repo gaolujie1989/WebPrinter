@@ -58,15 +58,15 @@ namespace WebPrinter
             };
         }
 
-        private void PrintPdfTestBtn_Click(object sender, EventArgs e)
+        private void PrintBWarenTestBtn_Click(object sender, EventArgs e)
         {
-            string pdf = Directory.GetCurrentDirectory() + "/test.pdf";
+            string pdf = Directory.GetCurrentDirectory() + "/test-bwaren.pdf";
             PrinterHelper.PrintPdf(pdf, GetPrintOptions());
         }
 
-        private void PrintImageTestBtn_Click(object sender, EventArgs e)
+        private void PrintVCDSTestBtn_Click(object sender, EventArgs e)
         {
-            string image = Directory.GetCurrentDirectory() + "/test.png";
+            string image = Directory.GetCurrentDirectory() + "/test-vcds.png";
             string pdf = image + ".pdf";
             Stream stream = File.OpenRead(image);
             CreatePdfFromImage(stream, pdf);
