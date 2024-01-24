@@ -184,7 +184,7 @@ namespace WebPrinter
             PdfDocument newDocument = new PdfDocument();
             //删除第一页，破解水印
             //newDocument.Pages.Add();
-            //newDocument.Pages.RemoveAt(0
+            //newDocument.Pages.RemoveAt(0);
             //设置文档纸张尺寸
             newDocument.PageSettings.Width = imageWidth;
             newDocument.PageSettings.Height = imageHeight;
