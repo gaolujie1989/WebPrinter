@@ -15,6 +15,8 @@ namespace WebPrinter
     {
         private HttpHelper httpHelper;
 
+        private string printTestFile;
+
         public Form1()
         {
             InitializeComponent();
@@ -23,6 +25,8 @@ namespace WebPrinter
         private void Form1_Load(object sender, EventArgs e)
         {
             LoadPrinters();
+            LoadPrintEngines();
+            LoadPrintTestFiles();
             StartPrintService();
         }
 
@@ -49,10 +53,58 @@ namespace WebPrinter
             Properties.Settings.Default.Save();
         }
 
+        private void LoadPrintEngines()
+        {
+            var printEngines = PrinterHelper.GetPrintEngines();
+            printEngineBox.DataSource = printEngines;
+
+            Properties.Settings.Default.PrintEngine = printEngineBox.SelectedItem.ToString();
+            Properties.Settings.Default.Save();
+        }
+
+        private void PrintEngineBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            Properties.Settings.Default.PrintEngine = comboBox.SelectedItem.ToString();
+            Properties.Settings.Default.Save();
+        }
+
+        private void LoadPrintTestFiles()
+        {
+            var printTestFiles = new List<string>()
+            {
+                "bwaren.pdf",
+                "dhl.pdf",
+                "vcds.png"
+            };
+            printTestFileBox.DataSource = printTestFiles;
+            printTestFile = printTestFileBox.SelectedItem.ToString();
+        }
+
+        private void PrintTestFileBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            printTestFile = comboBox.SelectedItem.ToString();
+        }
+
+        private void PrintTestBtn_Click(object sender, EventArgs e)
+        {
+            string filePath = Directory.GetCurrentDirectory() + "/TestFiles/" + printTestFile;
+            if (filePath.ToLower().EndsWith(".pdf"))
+            {
+                PrinterHelper.PrintPdf(filePath, GetPrintOptions());
+            }
+            else
+            {
+                PrinterHelper.PrintImage(filePath, GetPrintOptions());
+            }
+        }
+
         private PrintOptions GetPrintOptions()
         {
             return new PrintOptions()
             {
+                PrintEngine = Properties.Settings.Default.PrintEngine,
                 PrinterName = Properties.Settings.Default.PrinterName,
                 Landscape = Properties.Settings.Default.Landscape,
             };
@@ -61,15 +113,6 @@ namespace WebPrinter
         private void PrintBWarenTestBtn_Click(object sender, EventArgs e)
         {
             string pdf = Directory.GetCurrentDirectory() + "/test-bwaren.pdf";
-            PrinterHelper.PrintPdf(pdf, GetPrintOptions());
-        }
-
-        private void PrintVCDSTestBtn_Click(object sender, EventArgs e)
-        {
-            string image = Directory.GetCurrentDirectory() + "/test-vcds.png";
-            string pdf = image + ".pdf";
-            Stream stream = File.OpenRead(image);
-            CreatePdfFromImage(stream, pdf);
             PrinterHelper.PrintPdf(pdf, GetPrintOptions());
         }
 
@@ -93,6 +136,7 @@ namespace WebPrinter
                 return;
             }
 
+
             if (request.Url.AbsolutePath == "/print")
             {
                 string requestConent;
@@ -115,38 +159,18 @@ namespace WebPrinter
                 }
                 else if (postData.ContainsKey("print_pdf_base64"))
                 {
-                    string pdfFileDir = Directory.GetCurrentDirectory() + "/pdf/";
-                    if (!Directory.Exists(pdfFileDir))
-                    {
-                        Directory.CreateDirectory(pdfFileDir);
-                    }
-                    string fileName = pdfFileDir + DateTime.Now.ToString("yyyyMMddHHmmss_") + (new Random()).Next(1000, 9999).ToString() + ".pdf";
                     byte[] pdfBytes = Convert.FromBase64String(postData["print_pdf_base64"]);
-                    using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.CreateNew)))
-                    {
-                        writer.Write(pdfBytes);
-                    }
-
-                    PrinterHelper.PrintPdf(fileName, GetPrintOptions());
-                    File.Delete(fileName);
+                    Stream stream = new MemoryStream(pdfBytes);
+                    PrinterHelper.PrintPdf(stream, GetPrintOptions());
                     resultData.Add("result", "Success");
                     resultData.Add("status", "200");
                     statusCode = 200;
                 }
                 else if (postData.ContainsKey("print_image_base64"))
                 {
-                    string pdfFileDir = Directory.GetCurrentDirectory() + "/pdf/";
-                    if (!Directory.Exists(pdfFileDir))
-                    {
-                        Directory.CreateDirectory(pdfFileDir);
-                    }
-                    string fileName = pdfFileDir + DateTime.Now.ToString("yyyyMMddHHmmss_") + (new Random()).Next(1000, 9999).ToString() + ".pdf";
                     byte[] imageBytes = Convert.FromBase64String(postData["print_image_base64"]);
                     Stream stream = new MemoryStream(imageBytes);
-                    CreatePdfFromImage(stream, fileName);
-
-                    PrinterHelper.PrintPdf(fileName, GetPrintOptions());
-                    File.Delete(fileName);
+                    PrinterHelper.PrintImage(stream, GetPrintOptions());
                     resultData.Add("result", "Success");
                     resultData.Add("status", "200");
                     statusCode = 200;
@@ -182,10 +206,6 @@ namespace WebPrinter
             PdfImage imagePdf = PdfImage.FromStream(imageStream);
 
             PdfDocument newDocument = new PdfDocument();
-            //删除第一页，破解水印
-            //newDocument.Pages.Add();
-            //newDocument.Pages.RemoveAt(0);
-            //设置文档纸张尺寸
             newDocument.PageSettings.Width = imageWidth;
             newDocument.PageSettings.Height = imageHeight;
             newDocument.PageSettings.Margins.All = 0;

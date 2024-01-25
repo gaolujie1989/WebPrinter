@@ -29,15 +29,17 @@
         private void InitializeComponent()
         {
             this.printerGroupBox = new System.Windows.Forms.GroupBox();
+            this.printEngineBox = new System.Windows.Forms.ComboBox();
             this.landscapeBox = new System.Windows.Forms.CheckBox();
             this.printerListBox = new System.Windows.Forms.ListBox();
-            this.printBWarenTestBtn = new System.Windows.Forms.Button();
-            this.printVCDSTestBtn = new System.Windows.Forms.Button();
+            this.printTestBtn = new System.Windows.Forms.Button();
+            this.printTestFileBox = new System.Windows.Forms.ComboBox();
             this.printerGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // printerGroupBox
             // 
+            this.printerGroupBox.Controls.Add(this.printEngineBox);
             this.printerGroupBox.Controls.Add(this.landscapeBox);
             this.printerGroupBox.Controls.Add(this.printerListBox);
             this.printerGroupBox.Location = new System.Drawing.Point(24, 27);
@@ -46,6 +48,15 @@
             this.printerGroupBox.TabIndex = 0;
             this.printerGroupBox.TabStop = false;
             this.printerGroupBox.Text = "Printer";
+            // 
+            // printEngineBox
+            // 
+            this.printEngineBox.FormattingEnabled = true;
+            this.printEngineBox.Location = new System.Drawing.Point(16, 236);
+            this.printEngineBox.Name = "printEngineBox";
+            this.printEngineBox.Size = new System.Drawing.Size(121, 20);
+            this.printEngineBox.TabIndex = 3;
+            this.printEngineBox.SelectedIndexChanged += new System.EventHandler(this.PrintEngineBox_SelectedIndexChanged);
             // 
             // landscapeBox
             // 
@@ -70,33 +81,32 @@
             this.printerListBox.TabIndex = 1;
             this.printerListBox.SelectedIndexChanged += new System.EventHandler(this.PrinterListBox_SelectedIndexChanged);
             // 
-            // printBWarenTestBtn
+            // printTestBtn
             // 
-            this.printBWarenTestBtn.Location = new System.Drawing.Point(355, 56);
-            this.printBWarenTestBtn.Name = "printBWarenTestBtn";
-            this.printBWarenTestBtn.Size = new System.Drawing.Size(123, 23);
-            this.printBWarenTestBtn.TabIndex = 2;
-            this.printBWarenTestBtn.Text = "Print BWaren Test";
-            this.printBWarenTestBtn.UseVisualStyleBackColor = true;
-            this.printBWarenTestBtn.Click += new System.EventHandler(this.PrintBWarenTestBtn_Click);
+            this.printTestBtn.Location = new System.Drawing.Point(355, 85);
+            this.printTestBtn.Name = "printTestBtn";
+            this.printTestBtn.Size = new System.Drawing.Size(123, 23);
+            this.printTestBtn.TabIndex = 3;
+            this.printTestBtn.Text = "Print Test";
+            this.printTestBtn.UseVisualStyleBackColor = true;
+            this.printTestBtn.Click += new System.EventHandler(this.PrintTestBtn_Click);
             // 
-            // printVCDSTestBtn
+            // printTestFileBox
             // 
-            this.printVCDSTestBtn.Location = new System.Drawing.Point(355, 85);
-            this.printVCDSTestBtn.Name = "printVCDSTestBtn";
-            this.printVCDSTestBtn.Size = new System.Drawing.Size(123, 23);
-            this.printVCDSTestBtn.TabIndex = 3;
-            this.printVCDSTestBtn.Text = "Print VCDS Test";
-            this.printVCDSTestBtn.UseVisualStyleBackColor = true;
-            this.printVCDSTestBtn.Click += new System.EventHandler(this.PrintVCDSTestBtn_Click);
+            this.printTestFileBox.FormattingEnabled = true;
+            this.printTestFileBox.Location = new System.Drawing.Point(355, 56);
+            this.printTestFileBox.Name = "printTestFileBox";
+            this.printTestFileBox.Size = new System.Drawing.Size(121, 20);
+            this.printTestFileBox.TabIndex = 4;
+            this.printTestFileBox.SelectedIndexChanged += new System.EventHandler(this.PrintTestFileBox_SelectedIndexChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.printVCDSTestBtn);
-            this.Controls.Add(this.printBWarenTestBtn);
+            this.Controls.Add(this.printTestFileBox);
+            this.Controls.Add(this.printTestBtn);
             this.Controls.Add(this.printerGroupBox);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -111,8 +121,9 @@
 
         private System.Windows.Forms.GroupBox printerGroupBox;
         private System.Windows.Forms.ListBox printerListBox;
-        private System.Windows.Forms.Button printBWarenTestBtn;
         private System.Windows.Forms.CheckBox landscapeBox;
-        private System.Windows.Forms.Button printVCDSTestBtn;
+        private System.Windows.Forms.Button printTestBtn;
+        private System.Windows.Forms.ComboBox printEngineBox;
+        private System.Windows.Forms.ComboBox printTestFileBox;
     }
 }
