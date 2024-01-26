@@ -58,5 +58,17 @@ namespace WebPrinter.Properties {
                 this["PrintEngine"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PrintByImage {
+            get {
+                return ((bool)(this["PrintByImage"]));
+            }
+            set {
+                this["PrintByImage"] = value;
+            }
+        }
     }
 }

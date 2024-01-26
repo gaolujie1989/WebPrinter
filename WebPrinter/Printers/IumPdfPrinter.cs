@@ -1,7 +1,6 @@
 ﻿using PdfiumViewer;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 
 namespace WebPrinter.Printers

@@ -32,18 +32,19 @@ namespace WebPrinter.Printers
         {
             using (Image image = Image.FromStream(stream))
             {
+                Rectangle marginBounds = e.MarginBounds;
                 // 计算图片的缩放比例，以适应页面大小
                 float scale = Math.Min(
-                    e.MarginBounds.Width / (float)image.Width,
-                    e.MarginBounds.Height / (float)image.Height);
+                    marginBounds.Width / (float)image.Width,
+                    marginBounds.Height / (float)image.Height);
 
                 // 计算图片的新大小
                 int scaledWidth = (int)(image.Width * scale);
                 int scaledHeight = (int)(image.Height * scale);
 
                 // 计算图片居中时的起始位置
-                int x = e.MarginBounds.Left + (e.MarginBounds.Width - scaledWidth) / 2;
-                int y = e.MarginBounds.Top + (e.MarginBounds.Height - scaledHeight) / 2;
+                int x = (marginBounds.Width - scaledWidth) / 2;
+                int y = (marginBounds.Height - scaledHeight) / 2;
 
                 // 绘制调整大小后的图片
                 e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;

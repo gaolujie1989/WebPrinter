@@ -39,6 +39,27 @@ namespace WebPrinter
             Properties.Settings.Default.Save();
         }
 
+        private void LoadPrintEngines()
+        {
+            var printEngines = PrinterHelper.GetPrintEngines();
+            printEngineBox.DataSource = printEngines;
+
+            Properties.Settings.Default.PrintEngine = printEngineBox.SelectedItem.ToString();
+            Properties.Settings.Default.Save();
+        }
+
+        private void LoadPrintTestFiles()
+        {
+            var printTestFiles = new List<string>()
+            {
+                "bwaren.pdf",
+                "dhl.pdf",
+                "vcds.png"
+            };
+            printTestFileBox.DataSource = printTestFiles;
+            printTestFile = printTestFileBox.SelectedItem.ToString();
+        }
+
         private void PrinterListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListBox listBox = sender as ListBox;
@@ -53,12 +74,10 @@ namespace WebPrinter
             Properties.Settings.Default.Save();
         }
 
-        private void LoadPrintEngines()
+        private void PrintByImageBox_CheckedChanged(object sender, EventArgs e)
         {
-            var printEngines = PrinterHelper.GetPrintEngines();
-            printEngineBox.DataSource = printEngines;
-
-            Properties.Settings.Default.PrintEngine = printEngineBox.SelectedItem.ToString();
+            CheckBox checkBox = sender as CheckBox;
+            Properties.Settings.Default.PrintByImage = checkBox.Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -67,18 +86,6 @@ namespace WebPrinter
             ComboBox comboBox = sender as ComboBox;
             Properties.Settings.Default.PrintEngine = comboBox.SelectedItem.ToString();
             Properties.Settings.Default.Save();
-        }
-
-        private void LoadPrintTestFiles()
-        {
-            var printTestFiles = new List<string>()
-            {
-                "bwaren.pdf",
-                "dhl.pdf",
-                "vcds.png"
-            };
-            printTestFileBox.DataSource = printTestFiles;
-            printTestFile = printTestFileBox.SelectedItem.ToString();
         }
 
         private void PrintTestFileBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -107,6 +114,7 @@ namespace WebPrinter
                 PrintEngine = Properties.Settings.Default.PrintEngine,
                 PrinterName = Properties.Settings.Default.PrinterName,
                 Landscape = Properties.Settings.Default.Landscape,
+                PrintByImage = Properties.Settings.Default.PrintByImage,
             };
         }
 

@@ -42,6 +42,6 @@ namespace WebPrinter
         /// <summary>
         /// 打印DPI
         /// </summary>
-        public int DPI { get; set; } = 300;
+        public int DPI { get; set; } = 600;
     }
 }

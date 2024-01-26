@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.printerGroupBox = new System.Windows.Forms.GroupBox();
+            this.printByImageBox = new System.Windows.Forms.CheckBox();
             this.printEngineBox = new System.Windows.Forms.ComboBox();
             this.landscapeBox = new System.Windows.Forms.CheckBox();
             this.printerListBox = new System.Windows.Forms.ListBox();
@@ -39,6 +40,7 @@
             // 
             // printerGroupBox
             // 
+            this.printerGroupBox.Controls.Add(this.printByImageBox);
             this.printerGroupBox.Controls.Add(this.printEngineBox);
             this.printerGroupBox.Controls.Add(this.landscapeBox);
             this.printerGroupBox.Controls.Add(this.printerListBox);
@@ -48,6 +50,19 @@
             this.printerGroupBox.TabIndex = 0;
             this.printerGroupBox.TabStop = false;
             this.printerGroupBox.Text = "Printer";
+            // 
+            // printByImageBox
+            // 
+            this.printByImageBox.AutoSize = true;
+            this.printByImageBox.Checked = global::WebPrinter.Properties.Settings.Default.PrintByImage;
+            this.printByImageBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::WebPrinter.Properties.Settings.Default, "PrintByImage", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.printByImageBox.Location = new System.Drawing.Point(188, 238);
+            this.printByImageBox.Name = "printByImageBox";
+            this.printByImageBox.Size = new System.Drawing.Size(78, 16);
+            this.printByImageBox.TabIndex = 4;
+            this.printByImageBox.Text = "ImageMode";
+            this.printByImageBox.UseVisualStyleBackColor = true;
+            this.printByImageBox.CheckedChanged += new System.EventHandler(this.PrintByImageBox_CheckedChanged);
             // 
             // printEngineBox
             // 
@@ -125,5 +140,6 @@
         private System.Windows.Forms.Button printTestBtn;
         private System.Windows.Forms.ComboBox printEngineBox;
         private System.Windows.Forms.ComboBox printTestFileBox;
+        private System.Windows.Forms.CheckBox printByImageBox;
     }
 }
