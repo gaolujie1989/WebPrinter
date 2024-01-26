@@ -40,36 +40,34 @@ namespace WebPrinter
 
         public static void PrintImage(string filePath, PrintOptions options)
         {
-            CreatePrinter(options.PrintEngine).PrintImage(filePath, options);
+            CreatePrinter(options).PrintImage(filePath, options);
         }
 
         public static void PrintImage(Stream stream, PrintOptions options)
         {
-            CreatePrinter(options.PrintEngine).PrintImage(stream, options);
+            CreatePrinter(options).PrintImage(stream, options);
         }
 
         public static void PrintPdf(string filePath, PrintOptions options)
         {
-            CreatePrinter(options.PrintEngine).PrintPdf(filePath, options);
+            CreatePrinter(options).PrintPdf(filePath, options);
         }
 
         public static void PrintPdf(Stream stream, PrintOptions options)
         {
-            CreatePrinter(options.PrintEngine).PrintPdf(stream, options);
+            CreatePrinter(options).PrintPdf(stream, options);
         }
 
-        public static IPrinter CreatePrinter(string name)
+        public static IPrinter CreatePrinter(PrintOptions options)
         {
-            switch (name.ToUpper())
+            switch (options.PrintEngine.ToUpper())
             {
-                case "EVOPDF":
-                    return new EvoPdfPrinter();
                 case "IUMPDF":
-                    return new IumPdfPrinter();
+                    return new IumPdfPrinter() { PrintByImage = options.PrintByImage };
                 case "SPIREPDF":
-                    return new SpirePdfPrinter();
+                    return new SpirePdfPrinter() { PrintByImage = options.PrintByImage };
                 default:
-                    return new SystemImagePrinter();
+                    return new SystemImagePrinter() { PrintByImage = options.PrintByImage };
             }
         }
 
@@ -77,9 +75,8 @@ namespace WebPrinter
         {
             return new List<string>()
             {
-                "SPIREPDF",
                 "IUMPDF",
-                "EVOPDF",
+                "SPIREPDF",
             };
         }
     }

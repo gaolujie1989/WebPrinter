@@ -2,7 +2,9 @@
 using Spire.Pdf.Graphics;
 using Spire.Pdf.Print;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Drawing.Printing;
 using System.IO;
 
@@ -12,6 +14,11 @@ namespace WebPrinter.Printers
     {
         public override void PrintPdf(Stream stream, PrintOptions options)
         {
+            if (PrintByImage)
+            {
+                base.PrintPdf(stream, options);
+                return;
+            }
             using (var doc = new PdfDocument())
             {
                 doc.LoadFromStream(stream);
@@ -22,6 +29,11 @@ namespace WebPrinter.Printers
 
         public override void PrintImage(Stream stream, PrintOptions options)
         {
+            if (PrintByImage)
+            {
+                base.PrintImage(stream, options);
+                return;
+            }
             using (var doc = CreatePdfFromImage(stream))
             {
                 SetPrintOptions(doc.PrintSettings, options);
@@ -94,6 +106,21 @@ namespace WebPrinter.Printers
                 }
             }
             return null;
+        }
+
+        protected override List<Image> ConvertPdfToImage(Stream stream, int dpi = 300)
+        {
+            List<Image> imageList = new List<Image>();
+            using (var document = new PdfDocument())
+            {
+                document.LoadFromStream(stream);
+                for (int pageIndex = 0; pageIndex < document.Pages.Count; pageIndex++)
+                {
+                    var image = document.SaveAsImage(pageIndex, dpi, dpi);
+                    imageList.Add(image);
+                }
+            }
+            return imageList;
         }
     }
 }
