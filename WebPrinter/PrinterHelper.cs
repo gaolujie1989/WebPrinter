@@ -62,6 +62,8 @@ namespace WebPrinter
         {
             switch (options.PrintEngine.ToUpper())
             {
+                case "EVOPDF":
+                    return new EvoPdfPrinter() { PrintByImage = options.PrintByImage };
                 case "IUMPDF":
                     return new IumPdfPrinter() { PrintByImage = options.PrintByImage };
                 case "SPIREPDF":
@@ -75,8 +77,9 @@ namespace WebPrinter
         {
             return new List<string>()
             {
-                "SPIREPDF",
+                "EVOPDF",
                 "IUMPDF",
+                "SPIREPDF",
             };
         }
     }

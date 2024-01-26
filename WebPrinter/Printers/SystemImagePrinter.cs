@@ -81,24 +81,24 @@ namespace WebPrinter.Printers
                 printDocument.DefaultPageSettings.Margins = margins;
             }
 
-            // 获取打印机支持的分辨率列表
-            PrinterResolutionCollection resolutions = printDocument.PrinterSettings.PrinterResolutions;
+            //// 获取打印机支持的分辨率列表
+            //PrinterResolutionCollection resolutions = printDocument.PrinterSettings.PrinterResolutions;
 
-            // 选择一个高分辨率设置
-            PrinterResolution highResolution = null;
-            foreach (PrinterResolution res in resolutions)
-            {
-                if (res.Kind == PrinterResolutionKind.High)
-                {
-                    highResolution = res;
-                    break;
-                }
-            }
-            // 如果找到高分辨率设置，则应用它
-            if (highResolution != null)
-            {
-                printDocument.DefaultPageSettings.PrinterResolution = highResolution;
-            }
+            //// 选择一个高分辨率设置
+            //PrinterResolution highResolution = null;
+            //foreach (PrinterResolution res in resolutions)
+            //{
+            //    if (res.Kind == PrinterResolutionKind.High)
+            //    {
+            //        highResolution = res;
+            //        break;
+            //    }
+            //}
+            //// 如果找到高分辨率设置，则应用它
+            //if (highResolution != null)
+            //{
+            //    printDocument.DefaultPageSettings.PrinterResolution = highResolution;
+            //}
         }
 
 

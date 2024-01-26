@@ -17,7 +17,7 @@ namespace WebPrinter.Printers
 
             using (var document = PdfDocument.Load(stream))
             {
-                using (var printDocument = document.CreatePrintDocument())
+                using (var printDocument = document.CreatePrintDocument(PdfPrintMode.ShrinkToMargin))
                 {
                     SetSystemPrintOptions(printDocument, options);
                     printDocument.Print();
