@@ -26,19 +26,19 @@ namespace WebPrinter.Printers
             }
         }
 
-        public override void PrintImage(Stream stream, PrintOptions options)
-        {
-            if (PrintByImage)
-            {
-                base.PrintImage(stream, options);
-                return;
-            }
-            using (var doc = CreatePdfFromImage(stream))
-            {
-                SetPrintOptions(doc.PrintSettings, options);
-                doc.Print();
-            }
-        }
+        //public override void PrintImage(Stream stream, PrintOptions options)
+        //{
+        //    if (PrintByImage)
+        //    {
+        //        base.PrintImage(stream, options);
+        //        return;
+        //    }
+        //    using (var doc = CreatePdfFromImage(stream))
+        //    {
+        //        SetPrintOptions(doc.PrintSettings, options);
+        //        doc.Print();
+        //    }
+        //}
 
         public void PrintHtml(string html, PrintOptions options)
         {
@@ -50,6 +50,11 @@ namespace WebPrinter.Printers
             }
         }
 
+        /// <summary>
+        /// 通过图片生成PDF打印会有噪点
+        /// </summary>
+        /// <param name="imageStream"></param>
+        /// <returns></returns>
         public PdfDocument CreatePdfFromImage(Stream imageStream)
         {
             Image sourceImage = Image.FromStream(imageStream, false, false);
