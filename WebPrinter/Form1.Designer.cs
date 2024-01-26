@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.printerGroupBox = new System.Windows.Forms.GroupBox();
-            this.printByImageBox = new System.Windows.Forms.CheckBox();
             this.printEngineBox = new System.Windows.Forms.ComboBox();
-            this.landscapeBox = new System.Windows.Forms.CheckBox();
             this.printerListBox = new System.Windows.Forms.ListBox();
             this.printTestBtn = new System.Windows.Forms.Button();
             this.printTestFileBox = new System.Windows.Forms.ComboBox();
+            this.printByImageBox = new System.Windows.Forms.CheckBox();
+            this.landscapeBox = new System.Windows.Forms.CheckBox();
             this.printerGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,19 +51,6 @@
             this.printerGroupBox.TabStop = false;
             this.printerGroupBox.Text = "Printer";
             // 
-            // printByImageBox
-            // 
-            this.printByImageBox.AutoSize = true;
-            this.printByImageBox.Checked = global::WebPrinter.Properties.Settings.Default.PrintByImage;
-            this.printByImageBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::WebPrinter.Properties.Settings.Default, "PrintByImage", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.printByImageBox.Location = new System.Drawing.Point(188, 238);
-            this.printByImageBox.Name = "printByImageBox";
-            this.printByImageBox.Size = new System.Drawing.Size(78, 16);
-            this.printByImageBox.TabIndex = 4;
-            this.printByImageBox.Text = "ImageMode";
-            this.printByImageBox.UseVisualStyleBackColor = true;
-            this.printByImageBox.CheckedChanged += new System.EventHandler(this.PrintByImageBox_CheckedChanged);
-            // 
             // printEngineBox
             // 
             this.printEngineBox.FormattingEnabled = true;
@@ -72,19 +59,6 @@
             this.printEngineBox.Size = new System.Drawing.Size(121, 20);
             this.printEngineBox.TabIndex = 3;
             this.printEngineBox.SelectedIndexChanged += new System.EventHandler(this.PrintEngineBox_SelectedIndexChanged);
-            // 
-            // landscapeBox
-            // 
-            this.landscapeBox.AutoSize = true;
-            this.landscapeBox.Checked = global::WebPrinter.Properties.Settings.Default.Landscape;
-            this.landscapeBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::WebPrinter.Properties.Settings.Default, "landscape", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.landscapeBox.Location = new System.Drawing.Point(16, 201);
-            this.landscapeBox.Name = "landscapeBox";
-            this.landscapeBox.Size = new System.Drawing.Size(78, 16);
-            this.landscapeBox.TabIndex = 2;
-            this.landscapeBox.Text = "Landscape";
-            this.landscapeBox.UseVisualStyleBackColor = true;
-            this.landscapeBox.CheckedChanged += new System.EventHandler(this.LandscapeBox_CheckedChanged);
             // 
             // printerListBox
             // 
@@ -114,6 +88,33 @@
             this.printTestFileBox.Size = new System.Drawing.Size(121, 20);
             this.printTestFileBox.TabIndex = 4;
             this.printTestFileBox.SelectedIndexChanged += new System.EventHandler(this.PrintTestFileBox_SelectedIndexChanged);
+            // 
+            // printByImageBox
+            // 
+            this.printByImageBox.AutoSize = true;
+            this.printByImageBox.Checked = global::WebPrinter.Properties.Settings.Default.PrintByImage;
+            this.printByImageBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::WebPrinter.Properties.Settings.Default, "PrintByImage", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.printByImageBox.Location = new System.Drawing.Point(188, 238);
+            this.printByImageBox.Name = "printByImageBox";
+            this.printByImageBox.Size = new System.Drawing.Size(78, 16);
+            this.printByImageBox.TabIndex = 4;
+            this.printByImageBox.Text = "ImageMode";
+            this.printByImageBox.UseVisualStyleBackColor = true;
+            this.printByImageBox.Visible = false;
+            this.printByImageBox.CheckedChanged += new System.EventHandler(this.PrintByImageBox_CheckedChanged);
+            // 
+            // landscapeBox
+            // 
+            this.landscapeBox.AutoSize = true;
+            this.landscapeBox.Checked = global::WebPrinter.Properties.Settings.Default.Landscape;
+            this.landscapeBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::WebPrinter.Properties.Settings.Default, "landscape", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.landscapeBox.Location = new System.Drawing.Point(16, 201);
+            this.landscapeBox.Name = "landscapeBox";
+            this.landscapeBox.Size = new System.Drawing.Size(78, 16);
+            this.landscapeBox.TabIndex = 2;
+            this.landscapeBox.Text = "Landscape";
+            this.landscapeBox.UseVisualStyleBackColor = true;
+            this.landscapeBox.CheckedChanged += new System.EventHandler(this.LandscapeBox_CheckedChanged);
             // 
             // Form1
             // 

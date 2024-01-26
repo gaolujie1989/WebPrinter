@@ -15,8 +15,6 @@ namespace WebPrinter
     {
         private HttpHelper httpHelper;
 
-        private string printTestFile;
-
         public Form1()
         {
             InitializeComponent();
@@ -32,24 +30,23 @@ namespace WebPrinter
 
         private void LoadPrinters()
         {
+            var printerName = Properties.Settings.Default.PrinterName;
             var printers = PrinterHelper.GetLocalPrinters();
             printerListBox.DataSource = printers;
-
-            Properties.Settings.Default.PrinterName = printerListBox.SelectedItem.ToString();
-            Properties.Settings.Default.Save();
+            printerListBox.SelectedItem = printerName;
         }
 
         private void LoadPrintEngines()
         {
+            var printEngine = Properties.Settings.Default.PrintEngine;
             var printEngines = PrinterHelper.GetPrintEngines();
             printEngineBox.DataSource = printEngines;
-
-            Properties.Settings.Default.PrintEngine = printEngineBox.SelectedItem.ToString();
-            Properties.Settings.Default.Save();
+            printEngineBox.SelectedItem = printEngine;
         }
 
         private void LoadPrintTestFiles()
         {
+            var printTestFile = Properties.Settings.Default.PrintTestFile;
             var printTestFiles = new List<string>()
             {
                 "bwaren.pdf",
@@ -57,7 +54,7 @@ namespace WebPrinter
                 "vcds.png"
             };
             printTestFileBox.DataSource = printTestFiles;
-            printTestFile = printTestFileBox.SelectedItem.ToString();
+            printTestFileBox.SelectedItem = printTestFile;
         }
 
         private void PrinterListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -91,11 +88,13 @@ namespace WebPrinter
         private void PrintTestFileBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox comboBox = sender as ComboBox;
-            printTestFile = comboBox.SelectedItem.ToString();
+            Properties.Settings.Default.PrintTestFile = comboBox.SelectedItem.ToString();
+            Properties.Settings.Default.Save();
         }
 
         private void PrintTestBtn_Click(object sender, EventArgs e)
         {
+            var printTestFile = Properties.Settings.Default.PrintTestFile;
             string filePath = Directory.GetCurrentDirectory() + "/TestFiles/" + printTestFile;
             if (filePath.ToLower().EndsWith(".pdf"))
             {

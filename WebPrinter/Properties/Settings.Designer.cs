@@ -70,5 +70,17 @@ namespace WebPrinter.Properties {
                 this["PrintByImage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PrintTestFile {
+            get {
+                return ((string)(this["PrintTestFile"]));
+            }
+            set {
+                this["PrintTestFile"] = value;
+            }
+        }
     }
 }
